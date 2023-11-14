@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreTaskRequest;
 use Illuminate\Http\Request;
 
 class TaskController extends Controller
@@ -67,7 +68,11 @@ class TaskController extends Controller
         $title = 'Edit Task';
         $tasks = $this->tasks;
         $task = $tasks[$id - 1];
-
         return view('tasks.edit', ['pageTitle' => $title, 'task' => $task]);
+    }
+
+    public function create() {
+        $title = 'Create Task';
+        return view('tasks.create', ['pageTitle' => $title]);
     }
 }
