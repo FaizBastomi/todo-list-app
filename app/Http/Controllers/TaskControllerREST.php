@@ -45,30 +45,22 @@ class TaskControllerREST extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      */
-    public function edit(TasksModel $tasks, string $id)
+    public function edit(string $id)
     {
         $title = 'Edit Task';
-        $task = $tasks->find($id);
+        $task = TasksModel::find($id);
         return view('tasks.edit', ['pageTitle' => $title, 'task' => $task]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(TasksModel $tasks, UpdateTasksRequest $request, string $id)
+    public function update(UpdateTasksRequest $request, string $id)
     {
         $validate = $request->validated();
-        $task = $tasks->find($id);
+        $task = TasksModel::find($id);
         $task->name = $request->taskname;
         $task->detail = $request->taskdetail;
         $task->due_date = $request->taskduedate;
@@ -81,9 +73,9 @@ class TaskControllerREST extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(TasksModel $tasks, string $id)
+    public function destroy(string $id)
     {
-        $task = $tasks->find($id);
+        $task = TasksModel::find($id);
         $task->delete();
 
         return redirect('tasks');

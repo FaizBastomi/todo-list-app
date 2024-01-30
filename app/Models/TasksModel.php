@@ -11,6 +11,6 @@ class TasksModel extends Model
 
     protected $table = 'tasks';
     protected $primaryKey = 'id';
+    protected $fillable = ['name', 'detail', 'due_date', 'status'];
     public $incrementing = true;
-    public $timestamps = true;
 }
