@@ -48,7 +48,12 @@
                     @endswitch
                 </div>
                 <div>
-                    <a href="{{ route('tasks.edit', ['id' => $task->id]) }}">Edit</a>
+                    <a href="{{ route('tasks.edit', ['task' => $task->id]) }}">Edit</a>
+                    <form method="POST" action="{{ route('tasks.destroy', ['task' => $task->id]) }}">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit">Delete</button>
+                    </form>
                 </div>
             </div>
         @endforeach
