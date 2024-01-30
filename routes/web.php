@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\TaskController;
-use App\Http\Controllers\TaskControllerREST;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,4 +18,4 @@ Route::get('/', function () {
     return view('home');
 })->name('home');
 
-Route::resource('tasks', TaskControllerREST::class);
+Route::resource('tasks', TaskController::class);

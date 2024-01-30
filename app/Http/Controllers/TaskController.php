@@ -2,76 +2,82 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreTasksRequest;
+use App\Http\Requests\UpdateTasksRequest;
+use App\Models\TasksModel;
 use Illuminate\Http\Request;
 
 class TaskController extends Controller
 {
-    private $tasks;
-
-    public function __construct()
-    {
-
-        $this->tasks = [
-            (object) [
-                'id' => 1,
-                'name' => 'Develop Final Project',
-                'detail' => 'Kanban project using PHP and Laravel',
-                'due_date' => '2023-04-30',
-                'status' => 'not_started',
-            ],
-            (object) [
-                'id' => 2,
-                'name' => 'Lunch with Guru Domba',
-                'detail' => 'Have Nasi Padang with Guru Domba',
-                'due_date' => '2023-04-10',
-                'status' => 'not_started',
-            ],
-            (object) [
-                'id' => 3,
-                'name' => 'Learn Blade Templating',
-                'detail' => 'Complete Blade Templating material on Progate',
-                'due_date' => '2023-04-05',
-                'status' => 'in_progress',
-            ],
-            (object) [
-                'id' => 4,
-                'name' => 'Decide Plans for Lebaran holidays',
-                'detail' => 'Trip with family?',
-                'due_date' => '2023-04-21',
-                'status' => 'in_progress',
-            ],
-            (object) [
-                'id' => 5,
-                'name' => 'Develop a Laravel Project',
-                'detail' => 'Develop a Kanban app and ask Guru Domba\'s review',
-                'due_date' => '2023-04-30',
-                'status' => 'in_review',
-            ],
-            (object) [
-                'id' => 6,
-                'name' => 'Learn PHP Basics',
-                'detail' => 'Complete PHP materials on Frontend Course',
-                'due_date' => '2023-04-30',
-                'status' => 'completed',
-            ],
-        ];
-    }
+    /**
+     * Display a listing of the resource.
+     */
     public function index()
     {
         $title = 'Tasks List';
-        $tasks = $this->tasks;
-        return view("tasks.index", ['tasks' => $tasks, 'pageTitle' => $title]);
+        $tasks = TasksModel::all();
+        return view('tasks.index', ['tasks' => $tasks, 'pageTitle' => $title]);
     }
 
-    public function edit($id) {
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        return view('tasks.create', ['pageTitle' => 'Create Task']);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(StoreTasksRequest $request)
+    {
+        $validate = $request->validated();
+        $tasks = new TasksModel;
+        $tasks->name = $request->taskname;
+        $tasks->detail = $request->taskdetail;
+        $tasks->due_date = $request->taskduedate;
+        $tasks->status = $request->taskprogress;
+        $tasks->save();
+
+        return redirect('tasks');
+
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(string $id)
+    {
         $title = 'Edit Task';
-        $tasks = $this->tasks;
-        $task = $tasks[$id - 1];
+        $task = TasksModel::find($id);
         return view('tasks.edit', ['pageTitle' => $title, 'task' => $task]);
     }
 
-    public function create() {
-        $title = 'Create Task';
-        return view('tasks.create', ['pageTitle' => $title]);
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(UpdateTasksRequest $request, string $id)
+    {
+        $validate = $request->validated();
+        $task = TasksModel::find($id);
+        $task->name = $request->taskname;
+        $task->detail = $request->taskdetail;
+        $task->due_date = $request->taskduedate;
+        $task->status = $request->taskprogress;
+        $task->save();
+
+        return redirect('tasks');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(string $id)
+    {
+        $task = TasksModel::find($id);
+        $task->delete();
+
+        return redirect('tasks');
     }
 }
