@@ -47,7 +47,7 @@
                             Not Started
                     @endswitch
                 </div>
-                <div>
+                <div style="display: flex; flex-direction: row; column-gap: 0.5em;">
                     <a href="{{ route('tasks.edit', ['task' => $task->id]) }}">Edit</a>
                     <form method="POST" action="{{ route('tasks.destroy', ['task' => $task->id]) }}">
                         @csrf
